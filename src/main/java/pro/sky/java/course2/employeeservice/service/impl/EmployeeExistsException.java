@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class EmployeeExistsException extends RuntimeException {
 
     public EmployeeExistsException () {
-        super("Массив уже содержит этого работника");
+        super("уже содержит этого работника");
     }
     public EmployeeExistsException (String message){super((message));}
 
