@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RestController;
 import pro.sky.java.course2.employeeservice.model.Employee;
 import pro.sky.java.course2.employeeservice.service.EmployeeService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/employee")
 public class Controller {
@@ -34,14 +36,25 @@ public class Controller {
         return result + " удалён";
     }
 
+    @GetMapping("/get")
+    public List<Employee> printArray () {
+        List<Employee> result = employeeService.print();
+        return result;
+    }
+    @GetMapping("/size")
+    public int getSize () {
+        int result = employeeService.size();
+        return result;}
+
     @GetMapping("/find")
-    public Employee findEmployee(@RequestParam String firstName, @RequestParam String lastName) {
+    public String findEmployee(@RequestParam String firstName, @RequestParam String lastName) {
         Employee result = employeeService.find(firstName, lastName);
-        return employeeService.find(firstName, lastName);
+        return result + "найден";
 
     }
-
-    private String message(Employee employee, String status) {
-        return String.format("Сотрудник" + employee.getLastName(),employee.getFirstName(),status);
+    @GetMapping("/replace")
+    public String replaceEmployee(@RequestParam String firstName, @RequestParam String lastName){
+        Employee result = employeeService.replace(firstName, lastName);
+        return result + "заменён";
     }
 }

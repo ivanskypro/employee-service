@@ -1,79 +1,70 @@
 package pro.sky.java.course2.employeeservice.service.impl;
 
 import org.springframework.stereotype.Service;
-import pro.sky.java.course2.employeeservice.EmployeeBookOverflowException;
 import pro.sky.java.course2.employeeservice.model.Employee;
 import pro.sky.java.course2.employeeservice.service.EmployeeService;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
-    private Employee[] employees;
-    private int size;
+    List<Employee> employees = new ArrayList<>();
 
-    public EmployeeServiceImpl () {employees = new Employee[3];}
+
+    @Override
+    public Employee remove(String firstName, String lastName) {
+        Employee employee = new Employee(firstName, lastName);
+        employees.remove(employee);
+        return employee;}
 
 
     @Override
     public Employee add(String firstName, String lastName) {
         Employee newEmployee = new Employee(firstName, lastName);
-        return add(newEmployee);
+        employees.add(newEmployee);
+        return newEmployee;
     }
 
     @Override
-    public Employee add(Employee employee) {
-        if (size == employees.length) {
-            throw new EmployeeBookOverflowException("Массив сотрудников полон");
+    public List<Employee> print() {
+        for (int i = 0; i < employees.size() ; i++) {
         }
-        int index=indexOf(employee);
-
-        if (index != -1) {
-            throw new EmployeeExistsException();
-        }
-        employees[size++] = employee;
-        return employee;
+        return employees;
     }
 
     @Override
-    public Employee remove(String firstName, String lastName) {
-        Employee newEmployee = new Employee(firstName, lastName);
-        return remove(newEmployee);
-
-    }
-
-    @Override
-    public Employee remove(Employee employee) {
-        int index = indexOf(employee);
-
-        if (index != -1) {
-            Employee result = employees[index];
-            System.arraycopy(employees, index + 1, employees, index, size - index);
-            size--;
-            return result;
-        }
-        throw new EmployeeNotFoundException();
+    public int size() {
+       int size = employees.size();
+        return size;
     }
 
     @Override
     public Employee find(String firstName, String lastName) {
-        Employee newEmployee = new Employee(firstName, lastName);
-        int index = indexOf(newEmployee);
-
-        if (index != -1){
-            return employees[index];
-        }
-
+        for (int i = 0; i < employees.size(); i++) {
+            if (Objects.equals(employees.get(i), new Employee(firstName, lastName))) {
+                return employees.get(i);
+            } }
         throw new EmployeeNotFoundException();
     }
 
-    private int indexOf(Employee employee) {
-        for (int i = 0; i < size; i++) {
-            if (employees[i].equals(employee)) {
-                return i;
+    @Override
+    public Employee replace(String firstName, String lastName) {
+        for (int i = 0; i < employees.size(); i++) {
+            Employee employee = employees.get(i);
+            if (employees.get(i) != null) {
+                employee.setFirstName(firstName);
+                employee.setLastName(lastName);
+                return employee;
             }
         }
-        return -1;
+        throw new EmployeeExistsException();
     }
 
+    public int size(Employee employee) {
+        return employees.size();
+    }
 }
 
 
