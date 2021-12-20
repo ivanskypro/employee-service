@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import pro.sky.java.course2.employeeservice.model.Employee;
 import pro.sky.java.course2.employeeservice.service.EmployeeService;
 
-import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/employee")
@@ -30,31 +30,31 @@ public class Controller {
         return result + "успешно создан";
     }
 
-    @GetMapping("/remove")
-    public String eraseEmployee(@RequestParam String firstName, @RequestParam String lastName) {
-        Employee result = employeeService.remove(firstName, lastName);
-        return result + " удалён";
-    }
-
-    @GetMapping("/get")
-    public List<Employee> printArray () {
-        List<Employee> result = employeeService.print();
-        return result;
-    }
-    @GetMapping("/size")
-    public int getSize () {
-        int result = employeeService.size();
-        return result;}
-
     @GetMapping("/find")
     public String findEmployee(@RequestParam String firstName, @RequestParam String lastName) {
         Employee result = employeeService.find(firstName, lastName);
         return result + "найден";
 
     }
-    @GetMapping("/replace")
-    public String replaceEmployee(@RequestParam String firstName, @RequestParam String lastName){
-        Employee result = employeeService.replace(firstName, lastName);
-        return result + "заменён";
+
+    @GetMapping("/remove")
+    public String eraseEmployee(@RequestParam String firstName, @RequestParam String lastName) {
+         employeeService.remove(firstName, lastName);
+        return firstName +" "+ lastName + " удалён";
     }
+
+    @GetMapping("/get")
+    public Map<String, String> printArray () {
+        Map<String, String> result= employeeService.getEmployees();
+        return result;
+    }
+
+    @GetMapping("/size")
+    public int getSize () {
+        int result = employeeService.size();
+        return result;
+
+    }
+
+
 }
