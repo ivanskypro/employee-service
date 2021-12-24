@@ -4,39 +4,60 @@ import org.springframework.stereotype.Service;
 import pro.sky.java.course2.employeeservice.model.Employee;
 import pro.sky.java.course2.employeeservice.service.EmployeeService;
 
+
 import java.util.*;
+import java.util.stream.Stream;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
-    Map<String, String> employees = new HashMap<>();
+    List<Employee> employees = new ArrayList<>();
+
 
     @Override
-    public Employee add(String firstName, String lastName) {
-        Employee newEmployee = new Employee(firstName, lastName);
-        employees.put(firstName,lastName);
+    public Employee add(String firstName, String lastName, long salary, int departmentId) {
+        Employee newEmployee = new Employee(firstName, lastName, salary, departmentId);
+        employees.add(newEmployee);
         return newEmployee;
     }
 
     @Override
-    public boolean remove(String firstName, String lastName) {
-            boolean deletedEmployee = employees.remove(firstName,lastName);
-            return deletedEmployee;
+    public Employee remove(String firstName, String lastName, long salary, int departmentId) {
+        Employee employee = new Employee(firstName, lastName, salary, departmentId);
+        employees.remove(employee);
+        return employee;
     }
 
     @Override
-    public Employee find(String firstName, String lastName) {
-        Employee employee = new Employee(firstName, lastName);
-         if (!employees.containsKey(firstName) || !employees.containsValue(lastName)){
-             throw new EmployeeNotFoundException();}
-                 employees.get(employee);
-                return employee;}
-
-
+    public Employee find(String firstName, String lastName, long salary, int departmentId) {
+        for (Employee employee : employees) {
+            if (employee.equals(new Employee(firstName, lastName, salary,departmentId))) {
+                return employee;
+            }
+        }
+        throw new EmployeeNotFoundException();
+    }
 
     @Override
-    public Map<String, String> getEmployees() {
-    for (Map.Entry <String,String> employee: employees.entrySet()){
-        String employees = employee.getKey() + employee.getValue();}
+    public Optional<Employee> findMinSalary(int departmentId) {
+       return employees.stream()
+                .filter(s -> s.getDepartment() == departmentId)
+                .min(Comparator.comparingLong(s -> s.getSalary()));
+    }
+
+    @Override
+    public Optional<Employee> findMaxSalary(int departmentId) {
+        return employees.stream()
+                .filter(s -> s.getDepartment() == departmentId)
+                .max(Comparator.comparingLong(s -> s.getSalary()));
+    }
+
+    @Override
+    public Stream<Employee> printDepartment(int departmentId) {
+        return employees.stream().filter(s -> s.getDepartment() == departmentId);
+    }
+
+    @Override
+    public List <Employee> printAllDepartments() {
         return employees;
     }
 
@@ -44,4 +65,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public int size() {
         return employees.size();
     }
+
 }
+
+

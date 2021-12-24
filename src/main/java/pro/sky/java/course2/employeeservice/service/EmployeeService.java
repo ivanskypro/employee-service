@@ -2,20 +2,28 @@ package pro.sky.java.course2.employeeservice.service;
 
 import pro.sky.java.course2.employeeservice.model.Employee;
 
-import java.util.Map;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 public interface EmployeeService {
 
-     Employee add(String firstName, String lastName);
+     Employee add(String firstName, String lastName, long salary, int departmentId);
 
 
-     boolean remove(String firstName, String lastName);
+     Employee remove(String firstName, String lastName, long salary, int departmentId);
 
-     Map<String, String> getEmployees();
+     Employee find(String firstName, String lastName, long salary, int departmentId);
+
+     Optional<Employee> findMinSalary (int departmentId);
+
+     Optional<Employee> findMaxSalary (int departmentId);
+
+     Stream<Employee> printDepartment(int departmentId);
 
      int size();
 
-     Employee find(String firstName, String lastName);
+     List<Employee> printAllDepartments();
 
 
 
