@@ -52,9 +52,5 @@ public class Controller {
         return result + "найден";
 
     }
-    @GetMapping("/replace")
-    public String replaceEmployee(@RequestParam String firstName, @RequestParam String lastName){
-        Employee result = employeeService.replace(firstName, lastName);
-        return result + "заменён";
-    }
+
 }
