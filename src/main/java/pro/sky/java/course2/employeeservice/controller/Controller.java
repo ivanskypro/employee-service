@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pro.sky.java.course2.employeeservice.model.Employee;
+import pro.sky.java.course2.employeeservice.service.DepartmentService;
 import pro.sky.java.course2.employeeservice.service.EmployeeService;
 
 import java.util.List;
@@ -14,9 +15,11 @@ import java.util.stream.Stream;
 public class Controller {
 
     private final EmployeeService employeeService;
+    private final DepartmentService departmentService;
 
-    public Controller(EmployeeService employeeService) {
+    public Controller(EmployeeService employeeService, DepartmentService departmentService) {
         this.employeeService = employeeService;
+        this.departmentService = departmentService;
     }
 
     @GetMapping
@@ -46,30 +49,30 @@ public class Controller {
 
     @GetMapping("/employee/size")
     public int getSize () {
-        int result = employeeService.size();
+        int result = departmentService.size();
         return result;
     }
 
    @GetMapping ("/department/min-salary")
    public Optional<Employee> printMinSalary (@RequestParam int departmentId) {
-        Optional<Employee> result = employeeService.findMinSalary(departmentId);
+        Optional<Employee> result = departmentService.findMinSalary(departmentId);
         return result;
     }
 
     @GetMapping ("/department/max-salary")
    public Optional<Employee> printMaxSalary (@RequestParam int departmentId) {
-        Optional<Employee> result = employeeService.findMaxSalary(departmentId);
+        Optional<Employee> result = departmentService.findMaxSalary(departmentId);
         return result;
     }
     @GetMapping("/department/all")
     public Stream<Employee> printDepartment(@RequestParam int departmentId) {
-        Stream<Employee> result = employeeService.printDepartment(departmentId);
+        Stream<Employee> result = departmentService.printDepartment(departmentId);
         return result;
     }
 
     @GetMapping("/departments/all")
     public List<Employee> print() {
-        return employeeService.printAllDepartments();
+        return departmentService.printAllDepartments();
     }
 
 
