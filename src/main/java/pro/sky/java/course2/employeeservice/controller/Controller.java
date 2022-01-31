@@ -72,10 +72,7 @@ public class Controller {
 
     @GetMapping("/departments/all")
     public List<Employee> print() {
-        return departmentService.printAllDepartments();
+        return employeeService.printAllDepartments();
     }
-
-
-
 
 }

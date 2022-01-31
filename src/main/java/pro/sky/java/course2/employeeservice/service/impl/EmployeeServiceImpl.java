@@ -4,39 +4,52 @@ import org.springframework.stereotype.Service;
 import pro.sky.java.course2.employeeservice.EmployeeExistsException;
 import pro.sky.java.course2.employeeservice.EmployeeNotFoundException;
 import pro.sky.java.course2.employeeservice.model.Employee;
-import pro.sky.java.course2.employeeservice.model.EmployeeList;
 import pro.sky.java.course2.employeeservice.service.EmployeeService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
-
-    private final EmployeeList employeeList;
-
-    public EmployeeServiceImpl(EmployeeList employeeList) {
-        this.employeeList = employeeList;
+    public static boolean isNumeric(String name) {
+        for (char c : name.toCharArray())
+            if (Character.isDigit(c)){
+                return true;}
+        return false;
     }
+
+
+    private List<Employee> employeeList = new ArrayList<>();
 
     @Override
     public Employee add(String firstName, String lastName, long salary, int departmentId) {
         Employee newEmployee = new Employee(firstName, lastName, salary, departmentId);
-        if (employeeList.getEmployees().contains(newEmployee)) {
+        if (employeeList.contains(newEmployee)) {
             throw new EmployeeExistsException();
         }
-        employeeList.getEmployees().add(newEmployee);
+        if (firstName.isEmpty() || lastName.isEmpty() || salary <=0 || departmentId <=0){
+            throw new IllegalArgumentException();
+        }
+        if (isNumeric(firstName) == true || isNumeric(lastName)){
+            throw new IllegalArgumentException();
+        }
+        employeeList.add(newEmployee);
         return newEmployee;
     }
 
     @Override
     public Employee remove(String firstName, String lastName, long salary, int departmentId) {
         Employee employee = new Employee(firstName, lastName, salary, departmentId);
-        employeeList.getEmployees().remove(employee);
+            if (!employeeList.contains(employee)) {
+                throw new IllegalArgumentException();
+            }
+        employeeList.remove(employee);
         return employee;
     }
-
     @Override
     public Employee find(String firstName, String lastName, long salary, int departmentId) {
-        for (Employee employee : employeeList.getEmployees()) {
+        for (Employee employee : employeeList) {
             if (employee.equals(new Employee(firstName, lastName, salary,departmentId))) {
                 return employee;
             }
@@ -44,8 +57,10 @@ public class EmployeeServiceImpl implements EmployeeService {
         throw new EmployeeNotFoundException();
     }
 
-
-
+    @Override
+    public List<Employee> printAllDepartments() {
+        return employeeList;
+    }
 }
 
 
