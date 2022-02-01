@@ -6,16 +6,16 @@ import java.util.List;
 
 public interface EmployeeService {
 
-     Employee add(String firstName, String lastName);
+     Employee add(String firstName, String lastName, long salary, Integer department);
 
 
-     Employee remove(String firstName, String lastName);
+     Employee remove(String firstName, String lastName, long salary, Integer department);
 
-     List<Employee> print();
+     List<Employee> getAllEmployees();
 
      int size();
 
-     Employee find(String firstName, String lastName);
+     Employee find(String firstName, String lastName, long salary, Integer department);
 
 
 
